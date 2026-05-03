@@ -5,7 +5,7 @@
 #
 # 执行逻辑：
 #   [开机后] 等待 5 分钟 → 每 10 秒执行一次 start，持续 1 分钟（共约 7 次）
-#   [每日]   UTC 12:00 执行一次 start
+#   [每日]   UTC 20:00 执行一次 start
 #
 # 用法：以 root 身份执行
 #   bash setup-trojan-go-watchdog.sh
@@ -52,7 +52,7 @@ cat > "$WATCHDOG_SCRIPT" << 'EOF'
 # trojan-go 看门狗 v2
 #
 # 逻辑一：开机后等待 5 分钟，然后每 10 秒执行一次 start，持续 1 分钟
-# 逻辑二：之后保持运行，每天 UTC 12:00 执行一次 start
+# 逻辑二：之后保持运行，每天 UTC 20:00 执行一次 start
 
 MAIN_SCRIPT="/usr/local/bin/trojan-go_mod1.sh"
 LOG_FILE="/var/log/trojan-go-watchdog.log"
@@ -99,9 +99,9 @@ done
 log "--- 开机启动序列结束 ---"
 
 # ──────────────────────────────────────────────
-# 逻辑二：每日 UTC 12:00 执行
+# 逻辑二：每日 UTC 20:00 执行
 # ──────────────────────────────────────────────
-log "进入每日定时模式（UTC 12:00 触发）..."
+log "进入每日定时模式（UTC 20:00 触发）..."
 LAST_RUN_DATE=""
 
 while true; do
@@ -109,8 +109,8 @@ while true; do
     CURRENT_MIN=$(date -u +%M)
     CURRENT_DATE=$(date -u +%Y-%m-%d)
 
-    if [[ "$CURRENT_HOUR" == "12" && "$CURRENT_MIN" == "00" && "$CURRENT_DATE" != "$LAST_RUN_DATE" ]]; then
-        do_start "每日 UTC 12:00"
+    if [[ "$CURRENT_HOUR" == "20" && "$CURRENT_MIN" == "00" && "$CURRENT_DATE" != "$LAST_RUN_DATE" ]]; then
+        do_start "每日 UTC 20:00"
         LAST_RUN_DATE="$CURRENT_DATE"
     fi
 
@@ -152,7 +152,7 @@ echo "============================================================"
 echo " 安装完成！"
 echo "============================================================"
 echo " 开机行为 : 等待 5 分钟 → 每 10 秒执行 start，持续 1 分钟"
-echo " 每日定时 : UTC 12:00 执行一次 start"
+echo " 每日定时 : UTC 20:00 执行一次 start"
 echo " 日志文件 : $LOG_FILE"
 echo ""
 echo " 常用命令："
